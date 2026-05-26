@@ -5,6 +5,9 @@ import { forkJoin } from 'rxjs';
 import { FormsService } from '../../services/forms.service';
 import { MenuEntry } from '../../models/forms.models';
 
+/**
+ * 載入並顯示所有可瀏覽的表單、選單模組與物件函式庫清單。
+ */
 @Component({
   selector: 'app-forms-list',
   standalone: true,

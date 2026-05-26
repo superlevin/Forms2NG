@@ -1,14 +1,14 @@
 # Forms2NG Web
 
-Angular 18 frontend for Forms2NG.
+Forms2NG 的 Angular 18 Frontend。
 
-## Structure
+## 結構
 
-- `app-legacy/`: preserved AngularJS/Bower application
-- `src/`: Angular 18 source
-- `public/`: static assets copied into the Angular build
+- `app-legacy/`：保留的 AngularJS/Bower 應用程式
+- `src/`：Angular 18 原始碼
+- `public/`：會被複製到 Angular 建置輸出中的靜態資源
 
-## Commands
+## 指令
 
 ```bash
 npm install
@@ -17,7 +17,7 @@ npm run build:prod
 npm test
 ```
 
-## API configuration
+## API 設定
 
-- Development: `http://localhost:8080/forms2ng`
-- Production: `/forms2ng`
+- 開發環境：`http://localhost:8080/forms2ng`
+- 正式環境：`/forms2ng`
