@@ -1,55 +1,55 @@
 # Forms2NG
 
-**Forms2NG** lets you analyse Oracle Forms / D2k module files (`FMB`, `MMB`, `OLB`) in a web browser without Oracle Forms Builder.
+**Forms2NG** 可讓你在 Web 瀏覽器中分析 Oracle Forms / D2k 模組檔案（`FMB`、`MMB`、`OLB`），而不需要 Oracle Forms Builder。
 
-## Stack (v2)
+## 技術堆疊（v2）
 
-| Layer | Technology |
+| 層級 | 技術 |
 |-------|-----------|
-| Frontend | Angular 18, TypeScript, Bootstrap 5 |
-| Backend  | Spring Boot 3.3, Java 17, Spring MVC |
-| XML parsing | Jakarta JAXB (Oracle Forms XML schema) |
-| Build | npm / Angular CLI 18, Maven 3.x |
+| Frontend | Angular 18、TypeScript、Bootstrap 5 |
+| Backend  | Spring Boot 3.3、Java 17、Spring MVC |
+| XML parsing | Jakarta JAXB（Oracle Forms XML schema） |
+| Build | npm / Angular CLI 18、Maven 3.x |
 
-## Projects
+## 專案
 
-- **Forms2NgWeb** – Angular 18 single-page application
-- **Forms2NgWebService** – Spring Boot 3 REST API (executable JAR)
+- **Forms2NgWeb** – Angular 18 單頁應用程式
+- **Forms2NgWebService** – Spring Boot 3 REST API（可執行 JAR）
 
-## Supported D2k Formats
+## 支援的 D2k 格式
 
-Oracle Forms XML files are produced by the `frmf2xml` / `f2xml` utility included with Oracle Forms.
+Oracle Forms XML 檔案是由 Oracle Forms 內建的 `frmf2xml` / `f2xml` 工具所產生。
 
-| Format | File suffix | Description | API prefix |
+| 格式 | 檔案尾碼 | 說明 | API 前綴 |
 |--------|------------|-------------|------------|
-| FMB    | `*_fmb.xml` | Form Module | `/rest/forms/`, `/rest/menu/` |
-| MMB    | `*_mmb.xml` | Menu Module | `/rest/d2k/mmb/`, `/rest/menu/mmb` |
-| OLB    | `*_olb.xml` | Object Library | `/rest/d2k/olb/`, `/rest/menu/olb` |
-| PLL    | referenced inside FMB/MMB | PL/SQL Library (referenced only) | — |
+| FMB    | `*_fmb.xml` | Form Module | `/rest/forms/`、`/rest/menu/` |
+| MMB    | `*_mmb.xml` | Menu Module | `/rest/d2k/mmb/`、`/rest/menu/mmb` |
+| OLB    | `*_olb.xml` | Object Library | `/rest/d2k/olb/`、`/rest/menu/olb` |
+| PLL    | 於 FMB/MMB 內被參照 | PL/SQL Library（僅參照） | — |
 
-## Backend Setup
+## Backend 設定
 
-### Prerequisites
+### 先決條件
 - Java 17+
 - Maven 3.8+
 
-### Configuration (`application.properties`)
+### 設定（`application.properties`）
 
-| Property | Default | Description |
+| 屬性 | 預設值 | 說明 |
 |----------|---------|-------------|
-| `forms2ng.path` | `/opt/forms2ng/` | Directory containing `*_fmb.xml`, `*_mmb.xml`, `*_olb.xml` files |
-| `forms2ng.cors.allowed-origins` | `*` | Allowed CORS origins (e.g. `http://localhost:4200`) |
-| `server.port` | `8080` | HTTP port |
-| `server.servlet.context-path` | `/forms2ng` | Context path |
+| `forms2ng.path` | `/opt/forms2ng/` | 存放 `*_fmb.xml`、`*_mmb.xml`、`*_olb.xml` 檔案的目錄 |
+| `forms2ng.cors.allowed-origins` | `*` | 允許的 CORS 來源（例如 `http://localhost:4200`） |
+| `server.port` | `8080` | HTTP 連接埠 |
+| `server.servlet.context-path` | `/forms2ng` | 應用程式路徑前綴 |
 
-Override any property with environment variables or a custom `application.properties`:
+你可以透過環境變數或自訂 `application.properties` 覆寫任一屬性：
 ```bash
 export FORMS2NG_PATH=/data/forms/xml/
 export SERVER_PORT=9090
 java -jar forms2ng-service-2.0.0.jar
 ```
 
-### Build & Run
+### 建置與執行
 ```bash
 cd Forms2NgWebService
 mvn clean package -DskipTests
@@ -58,31 +58,31 @@ java -jar target/forms2ng-service-2.0.0.jar --forms2ng.path=/path/to/xml/files/
 
 ### REST API
 
-| Method | Path | Description |
+| 方法 | 路徑 | 說明 |
 |--------|------|-------------|
-| GET | `/rest/menu/` | List FMB modules |
-| GET | `/rest/menu/mmb` | List MMB modules |
-| GET | `/rest/menu/olb` | List OLB modules |
-| GET | `/rest/forms/stats/{name}` | Form statistics (blocks, items, triggers, canvases) |
-| GET | `/rest/forms/blocks/{name}` | Blocks list |
-| GET | `/rest/forms/canvas/{name}` | Canvases list |
-| GET | `/rest/forms/triggersforblock/{name}/{block}` | Triggers for a block |
-| GET | `/rest/blocks/{name}/{block}` | Single block detail |
-| GET | `/rest/d2k/mmb/{name}` | Full MMB module |
-| GET | `/rest/d2k/olb/{name}` | Full OLB module |
+| GET | `/rest/menu/` | 列出 FMB 模組 |
+| GET | `/rest/menu/mmb` | 列出 MMB 模組 |
+| GET | `/rest/menu/olb` | 列出 OLB 模組 |
+| GET | `/rest/forms/stats/{name}` | 表單統計資訊（blocks、items、triggers、canvases） |
+| GET | `/rest/forms/blocks/{name}` | Block 清單 |
+| GET | `/rest/forms/canvas/{name}` | Canvas 清單 |
+| GET | `/rest/forms/triggersforblock/{name}/{block}` | 指定 block 的 triggers |
+| GET | `/rest/blocks/{name}/{block}` | 單一 block 詳細資訊 |
+| GET | `/rest/d2k/mmb/{name}` | 完整 MMB 模組 |
+| GET | `/rest/d2k/olb/{name}` | 完整 OLB 模組 |
 
-Error responses use standard HTTP status codes:
-- `404 Not Found` – file not found in configured path
-- `500 Internal Server Error` – XML parse error
+錯誤回應使用標準 HTTP 狀態碼：
+- `404 Not Found` – 在設定的路徑中找不到檔案
+- `500 Internal Server Error` – XML 解析錯誤
 
-## Frontend Setup
+## Frontend 設定
 
-### Prerequisites
+### 先決條件
 - Node.js 20 LTS+
 - npm 10+
 
-### Configuration
-Edit `src/environments/environment.ts` (dev) or `src/environments/environment.prod.ts` (prod):
+### 設定
+編輯 `src/environments/environment.ts`（開發）或 `src/environments/environment.prod.ts`（正式）：
 ```typescript
 export const environment = {
   production: false,
@@ -90,42 +90,42 @@ export const environment = {
 };
 ```
 
-### Development server
+### 開發伺服器
 ```bash
 cd Forms2NgWeb
 npm install
-npm start           # serves at http://localhost:4200
+npm start           # 服務位址為 http://localhost:4200
 ```
 
-### Production build
+### 正式版建置
 ```bash
-npm run build:prod  # output in dist/forms2ng-web/
+npm run build:prod  # 輸出於 dist/forms2ng-web/
 ```
 
-### Tests
+### 測試
 ```bash
-npm test            # runs Karma + Jasmine in ChromeHeadless
+npm test            # 在 ChromeHeadless 中執行 Karma + Jasmine
 ```
 
-## Preparing XML Files
+## 準備 XML 檔案
 
-Convert Oracle Forms binary files to XML using Oracle's `frmf2xml` utility:
+使用 Oracle 的 `frmf2xml` 工具將 Oracle Forms 二進位檔轉換為 XML：
 ```bash
-# Convert FMB (form)
+# 轉換 FMB（form）
 frmf2xml MYFORM.fmb
-# produces MYFORM_fmb.xml
+# 會產生 MYFORM_fmb.xml
 
-# Convert MMB (menu module)
+# 轉換 MMB（menu module）
 frmf2xml MYMENU.mmb
-# produces MYMENU_mmb.xml
+# 會產生 MYMENU_mmb.xml
 
-# Convert OLB (object library)
+# 轉換 OLB（object library）
 frmf2xml MYLIB.olb
-# produces MYLIB_olb.xml
+# 會產生 MYLIB_olb.xml
 ```
 
-Place all `*_fmb.xml`, `*_mmb.xml`, `*_olb.xml` files in the directory configured by `forms2ng.path`.
+請將所有 `*_fmb.xml`、`*_mmb.xml`、`*_olb.xml` 檔案放入 `forms2ng.path` 所設定的目錄中。
 
-## Legacy Frontend
+## 舊版 Frontend
 
-The original AngularJS 1.2 frontend is preserved in `Forms2NgWeb/app-legacy/` for reference.
+原始的 AngularJS 1.2 Frontend 保留於 `Forms2NgWeb/app-legacy/`，可供參考。

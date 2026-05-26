@@ -148,7 +148,7 @@ public class FormsParserService {
     }
 
     /**
-     * Returns the block for the given form, or {@code null} when the block does not exist.
+     * 回傳指定表單中的 block；若該 block 不存在，則回傳 {@code null}。
      */
     public Block getBlock(String formName, String blockName) throws Exception {
         for (Block blk : getBlocks(formName)) {

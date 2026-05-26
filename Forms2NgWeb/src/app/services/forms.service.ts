@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Block, Canvas, FormsStats, MenuEntry, Trigger } from '../models/forms.models';
 
+/**
+ * 封裝 Forms2NG 後端 REST API 的存取邏輯，
+ * 提供表單、選單模組、物件函式庫與明細資料的查詢方法。
+ */
 @Injectable({ providedIn: 'root' })
 export class FormsService {
   private readonly base = environment.apiBase;

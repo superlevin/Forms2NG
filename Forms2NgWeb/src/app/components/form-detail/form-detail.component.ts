@@ -5,6 +5,9 @@ import { forkJoin } from 'rxjs';
 import { FormsService } from '../../services/forms.service';
 import { Block, Canvas, FormsStats, Trigger } from '../../models/forms.models';
 
+/**
+ * 顯示指定表單的統計資料、blocks、canvases，以及所選 block 的詳細內容。
+ */
 @Component({
   selector: 'app-form-detail',
   standalone: true,
@@ -38,6 +41,9 @@ export class FormDetailComponent implements OnInit {
     });
   }
 
+  /**
+   * 根據目前路由中的表單名稱，載入摘要、block 與 canvas 資料。
+   */
   loadData(): void {
     if (!this.formName) {
       this.error = 'No form name provided.';
@@ -71,6 +77,9 @@ export class FormDetailComponent implements OnInit {
     });
   }
 
+  /**
+   * 切換目前選取的 block，並同步載入該 block 的詳細資料與 triggers。
+   */
   selectBlock(block: Block): void {
     this.selectedBlock = block;
     this.blockDetails = null;
