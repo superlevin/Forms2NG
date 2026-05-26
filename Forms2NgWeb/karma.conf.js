@@ -1,33 +1,47 @@
-module.exports = function(config){
+const fs = require('fs');
+
+const chromeCandidates = [
+  process.env.CHROME_BIN,
+  '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/usr/bin/chromium-browser',
+  '/usr/bin/chromium'
+].filter(Boolean);
+
+process.env.CHROME_BIN = chromeCandidates.find((candidate) => fs.existsSync(candidate)) || process.env.CHROME_BIN;
+
+module.exports = function (config) {
   config.set({
-
-    basePath : './',
-
-    files : [
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-route/angular-route.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
-      'app/components/**/*.js',
-      'app/view*/**/*.js'
+    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage'),
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
-
-    autoWatch : true,
-
-    frameworks: ['jasmine'],
-
-    browsers : ['Chrome'],
-
-    plugins : [
-            'karma-chrome-launcher',
-            'karma-firefox-launcher',
-            'karma-jasmine',
-            'karma-junit-reporter'
-            ],
-
-    junitReporter : {
-      outputFile: 'test_out/unit.xml',
-      suite: 'unit'
-    }
-
+    client: {
+      jasmine: {},
+      clearContext: false
+    },
+    jasmineHtmlReporter: {
+      suppressAll: true
+    },
+    coverageReporter: {
+      dir: require('path').join(__dirname, './coverage/forms2ng-web'),
+      subdir: '.',
+      reporters: [{ type: 'html' }, { type: 'text-summary' }]
+    },
+    reporters: ['progress', 'kjhtml'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+      }
+    },
+    browsers: ['ChromeHeadlessNoSandbox'],
+    restartOnFileChange: true,
+    singleRun: false
   });
 };
