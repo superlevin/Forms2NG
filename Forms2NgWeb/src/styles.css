@@ -1,0 +1,12 @@
+body {
+  background-color: #f5f5f5;
+  color: #212529;
+}
+
+a {
+  text-decoration: none;
+}
+
+.card {
+  border: 0;
+}

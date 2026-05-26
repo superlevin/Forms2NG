@@ -5,4 +5,4 @@
 // Generated on: 2014.12.10 at 09:54:43 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://xmlns.oracle.com/Forms", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED) package com.mobissime.forms.objects;
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://xmlns.oracle.com/Forms", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED) package com.mobissime.forms.objects;
